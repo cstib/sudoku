@@ -29,12 +29,18 @@ public int getValue() {
 }
 
 public void setRand() {
-	Random rand = new Random();
-	//value = 1 + rand.nextInt(9);
-	//choose a random form possible
-	int rand_pos = rand.nextInt(possible.size());
-	value = possible.get(rand_pos);
+
+	if (!fixed) {
+		
 	
+
+	  Random rand = new Random();
+	  //value = 1 + rand.nextInt(9);
+	  //choose a random form possible
+	  int rand_pos = rand.nextInt(possible.size());
+	  value = possible.get(rand_pos);
+  }
+
 }
 
 public void setValue(int v) {
@@ -42,8 +48,16 @@ public void setValue(int v) {
 	fixed = true;
 }
 
+
+public void fix(){
+	fixed = true;
+}
+
+}
+
     public void remove_possible(int num) {
 	//check that it is in?
 	possible.remove(new Integer(num));
     }
 }
+

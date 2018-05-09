@@ -80,7 +80,7 @@ public void randomize() {
 			table[i][j].setRand();	
 		}
 	}
-	//this.display();
+	this.display();
 }
 
 public void setElement() {
@@ -135,6 +135,10 @@ public boolean rowsSolved() {
 	while (i<9 && containsAll) {
 		int [] row = getRow(i);	
 		containsAll = containsAll(row); //if false set containsAll to false, the loop will stop
+		if (containsAll) {
+				System.out.println("row fixed");
+				this.fixRow(i); //this row wont be randomized
+		}
 		//System.out.println(i);
 		i++;
 	}
@@ -174,9 +178,10 @@ public boolean containsAll(int[] list) {
 		contains = contains(list, i);
 		i++;	
 	}
-	//if (contains) {
+	if (contains) {
 	//	System.out.println("list is correct!");
-	//}
+		
+	}
 	return contains;
 	
 }
@@ -208,14 +213,20 @@ public void random_rows() {
 	while(!this.rowsSolved()) {
 		this.randomize();
 	}
-	Timestamp stopTime =  new Timestamp(date.getTime());
+	java.util.Date date1 = new java.util.Date();	
+	Timestamp stopTime =  new Timestamp(date1.getTime());
 	System.out.println("The rows are correct!");
 	System.out.println(stopTime);
-	long milliseconds = startTime.getTime() - stopTime.getTime();
+	long milliseconds = stopTime.getTime() - startTime.getTime();
 	System.out.println("Solved in " + milliseconds/1000 + "seconds");
 	
 }
 
+public void fixRow(int row) {
+	for (int i = 0; i<9; i++) {
+		table[row][i].fix();
+	}
+}
 
 public static void main(String[] args) {
 
