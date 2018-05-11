@@ -23,13 +23,13 @@ public void display() {
 	for(int i = 0; i<9; i++) {
 		for(int j = 0; j<9; j++) {			
 			System.out.print(table[i][j].getValue() + " ");
-			if ((j+1)%3 == 0) {
+			if (((j+1)%3 == 0) && (j <7)) {
 				System.out.print("|");
 				}
 			}
 		System.out.println();
-		if ((i+1)%3 == 0) {
-			for(int j = 0; j<9; j++) {
+		if (((i+1)%3 == 0) && (i<7)) {
+			for(int j = 0; j<10; j++) {
 				System.out.print("- ");
 				}
 			}
@@ -66,6 +66,12 @@ public void getInput() {
 			System.out.println("Setting a trivial solution");
 			this.trivial();
 			break;
+		case "p":
+			this.getPossible();
+			break;
+		case "a":
+			setFirstRow();
+			break;
 		default:
 			System.out.println("Unknown command");	
 			break;
@@ -97,9 +103,14 @@ public void setElement() {
 	System.out.println(v);
 	//input check, maybe try catching exceptions
 	if ( (i==(int)i) &&  (j==(int)j) && (v==(int)v) ) {
-		table[i][j].setValue(v);
-		System.out.println("setting row " + i + "column " + j + "to " + v);  
-		this.display(); 
+		if (table[i][j].setValue(v)) {
+			System.out.println("setting row " + i + "column " + j + "to " + v);  
+			this.display(); 
+			this.removePossible(i, j, v);
+		} else {
+			System.out.println("This value is not valid");
+			this.display(); 
+		}
 	}
 		
 	else {
@@ -226,6 +237,36 @@ public void fixRow(int row) {
 	for (int i = 0; i<9; i++) {
 		table[row][i].fix();
 	}
+}
+
+public void removePossible(int row, int col, int value) {
+	//remove possible values from the row , except for col
+	for (int i = 0; i<9; i++) {
+		if (i != col) {
+			if(table[row][i].removePossible(value)) {
+				display();	
+			}
+		}
+	}
+}
+
+public void getPossible(){
+	System.out.println("Enter column and row  no separation");
+	Scanner in = new Scanner(System.in);
+	String paramsString = in.nextLine();
+	//TODO check String lenght
+	int i = Character.getNumericValue(paramsString.charAt(0));
+	System.out.println(i);
+	int j = Character.getNumericValue(paramsString.charAt(1));
+	System.out.println(table[i][j].getPossible());
+}
+
+public void setFirstRow() {
+	for(int i = 0; i<7; i++) {
+		table[0][i].setValue(i+1);
+		removePossible(0, i, i+1);
+	}
+	display();
 }
 
 public static void main(String[] args) {

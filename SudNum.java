@@ -25,7 +25,11 @@ public SudNum() {
 }
 
 public int getValue() {
-	return value;
+	if (fixed) {
+		return value;
+	} else {
+		return 0;
+	}
 }
 
 public void setRand() {
@@ -43,9 +47,16 @@ public void setRand() {
 
 }
 
-public void setValue(int v) {
-	value = v;
-	fixed = true;
+public boolean setValue(int v) {
+	if (possible.contains(v)) {
+		value = v;
+		fixed = true;
+		return true;
+	} else {
+		//Move to display class
+		return false;
+		
+	}
 }
 
 
@@ -53,11 +64,25 @@ public void fix(){
 	fixed = true;
 }
 
-}
 
-    public void remove_possible(int num) {
+
+    public boolean removePossible(int num) {
 	//check that it is in?
-	possible.remove(new Integer(num));
-    }
+		possible.remove(Integer.valueOf(num));
+		if (possible.size() == 1) {
+			Integer lastPossible = possible.get(0);
+			//TODO move tho display class
+			System.out.println("Only one possible value left " + lastPossible + ", setting to that value");
+			value = lastPossible;
+			fixed = true;
+			return true;
+		} else {
+			return false;	
+		}
+	}
+	
+	public ArrayList<Integer> getPossible() {
+		return possible;
+	}
 }
 
